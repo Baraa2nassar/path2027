@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>My 2027 Path</title>
+<meta name="theme-color" content="#0E6B5A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="2027 Path">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#13231F; --muted:#5B6D67; --line:#DCE4E0;
+  --emerald:#0E6B5A; --emerald-soft:#DDEFE9; --gold:#B8871B; --gold-soft:#F6ECD3; --done:#0E6B5A; --warn:#B4552A;
+  --display:"Outfit",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0D1715; --surface:#15221F; --ink:#E8F0ED; --muted:#93A6A0; --line:#263632;
+  --emerald:#3FB79C; --emerald-soft:#173A33; --gold:#E0B54A; --gold-soft:#3A2F14; --done:#3FB79C; --warn:#E08A5E; color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(48px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.hero{display:flex;gap:18px;align-items:center;position:relative}
+.hero .star{position:absolute;right:-30px;top:-30px;width:150px;opacity:.08;color:var(--emerald);pointer-events:none}
+.ring{flex:none;width:96px;height:96px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:22px}
+.hero h1{font-size:28px;line-height:1.1}
+.hero p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.badge{align-self:flex-start;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 12px;font:600 12px var(--body);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.badge.ok i{background:var(--done)} .badge.ok{color:var(--emerald)}
+.badge.wait i{background:var(--gold)} .badge.err i{background:var(--warn)} .badge.err{color:var(--warn)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:2px}
+.stat b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums}
+.stat span{color:var(--muted);font-size:12px;letter-spacing:.02em}
+.week{background:#0E6B5A;color:#fff;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.week .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;opacity:.85}
+.week h2{font-size:22px;line-height:1.25}
+.week .nav{display:flex;justify-content:space-between;align-items:center}
+.week .nav button{background:rgba(255,255,255,.15);border:0;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer}
+.week .nav button:disabled{opacity:.35}
+.chipbtn{border:0;border-radius:999px;padding:8px 14px;font:600 13px var(--body);cursor:pointer;background:rgba(255,255,255,.15);color:#fff;display:inline-flex;gap:6px;align-items:center}
+.chipbtn[aria-pressed="true"]{background:#fff;color:#0E6B5A}
+.block{background:rgba(255,255,255,.1);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.block .lbl{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px}
+.block .lbl svg{width:20px;height:20px}
+.block .sub{font-size:12px;opacity:.8;font-weight:400}
+.qrow{display:grid;grid-template-columns:1fr 64px 64px;gap:8px}
+.qrow select,.qrow input{width:100%;min-width:0;border:0;border-radius:10px;padding:9px 8px;font:500 16px var(--body);background:#fff;color:#13231F}
+.qrow label{display:flex;flex-direction:column;gap:3px;font-size:11px;opacity:.85}
+.counter{display:flex;align-items:center;gap:12px}
+.step{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:20px;cursor:pointer}
+.counter b{font-family:var(--display);font-size:22px;font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
+.pdots{display:flex;gap:5px;margin-left:auto}
+.pdots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.25)}
+.pdots i.on{background:#fff}
+.saved{font-size:12px;opacity:.85;min-height:1em}
+.check{display:flex;align-items:center;gap:12px;width:100%;padding:14px;border-radius:14px;border:0;cursor:pointer;text-align:left;background:rgba(255,255,255,.12);color:#fff;font:500 15px/1.35 var(--body)}
+.check .box{flex:none;width:26px;height:26px;border-radius:8px;border:2px solid rgba(255,255,255,.75);display:grid;place-items:center}
+.check[aria-pressed="true"]{background:#fff;color:#0E6B5A}
+.check[aria-pressed="true"] .box{background:#0E6B5A;border-color:#0E6B5A}
+.check[aria-pressed="true"] .box::after{content:"";width:7px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.check .small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.07em;opacity:.75;margin-bottom:2px}
+.gymgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gymgrid .check{flex-direction:column;gap:6px;padding:12px 6px;text-align:center;font-size:14px}
+.tabs{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:4px}
+.tabs button{flex:1;border:0;background:none;padding:9px;border-radius:999px;font:600 14px var(--body);color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--emerald-soft);color:var(--emerald)}
+.panel{display:flex;flex-direction:column;gap:12px}
+.month{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.month>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px}
+.month>summary::-webkit-details-marker{display:none}
+.month>summary h3{font-size:17px;flex:1}
+.bar{width:80px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--done)}
+.count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:34px;text-align:right}
+.wline{display:flex;align-items:flex-start;border-top:1px solid var(--line)}
+.wline.now{background:var(--gold-soft)}
+.wrow{display:flex;gap:12px;align-items:flex-start;padding:12px 16px 12px 8px;cursor:pointer;background:none;border:0;width:100%;text-align:left;color:inherit;font:inherit}
+.wcheck{flex:none;margin:10px 0 0 12px;width:26px;height:26px;border-radius:50%;border:2px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;padding:0}
+.wcheck[aria-pressed="true"]{background:var(--done);border-color:var(--done)}
+.wcheck[aria-pressed="true"]::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.wcheck:disabled{opacity:.4;cursor:not-allowed}
+.wrow .d{font-size:12px;color:var(--muted);width:44px;flex:none;padding-top:2px;font-variant-numeric:tabular-nums}
+.wrow .t{flex:1;min-width:0;font-size:14px}
+.wrow .t.pub{font-weight:600;color:var(--gold)}
+.dots{display:flex;gap:4px;padding-top:6px;flex:none}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--done)}
+.mgrid{display:grid;gap:8px;padding:0 16px 16px}
+.mline{display:flex;gap:10px;align-items:flex-start;font-size:14px}
+.mline svg{width:20px;height:20px;flex:none;color:var(--emerald);margin-top:1px}
+.mline b{font-weight:600;display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.dreams{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dream{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.dream svg{width:30px;height:30px;color:var(--emerald)}
+.dream.main{grid-column:1/-1;background:var(--gold-soft);border-color:transparent}
+.dream.main svg{color:var(--gold)}
+.dream h3{font-size:15px}
+.dream p{margin:0;font-size:13px;color:var(--muted)}
+.grp{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:8px 0 -2px}
+.settings{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.settings label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.settings input{border:1px solid var(--line);border-radius:10px;padding:10px;font:16px var(--body);background:var(--bg);color:var(--ink);width:100%}
+.settings .row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:10px 16px;font:600 14px var(--body);cursor:pointer;background:var(--emerald);color:#fff}
+.btn.ghost{background:var(--emerald-soft);color:var(--emerald)}
+.status{font-size:13px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+@media (max-width:380px){.stat b{font-size:18px}.hero h1{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3"><rect x="20" y="20" width="60" height="60"/><rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)"/><circle cx="50" cy="50" r="14"/></g></svg>
+    <div class="ring" aria-label="Year progress">
+      <svg width="96" height="96" viewBox="0 0 96 96"><circle cx="48" cy="48" r="40" fill="none" stroke="var(--line)" stroke-width="10"/><circle id="ringArc" cx="48" cy="48" r="40" fill="none" stroke="var(--emerald)" stroke-width="10" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3"/></svg>
+      <div class="pct" id="pct">0%</div>
+    </div>
+    <div>
+      <h1>My 2027 Path</h1>
+      <p>Small and consistent. أحب الأعمال إلى الله أدومها وإن قل</p>
+    </div>
+  </header>
+
+  <button class="badge" id="badge"><i></i><span id="badgeTxt">On this phone only</span></button>
+
+  <div class="stats">
+    <div class="stat"><b id="sWeeks">0</b><span>full weeks</span></div>
+    <div class="stat"><b id="sStories">0/6</b><span>stories out</span></div>
+    <div class="stat"><b id="sQuran" style="font-size:16px">Not started</b><span>Quran: memorized up to</span></div>
+  </div>
+
+  <section class="week" aria-labelledby="wkTitle">
+    <div class="nav">
+      <button id="prev" aria-label="Previous week">‹</button>
+      <span class="eyebrow" id="wkLabel">This week</span>
+      <button id="next" aria-label="Next week">›</button>
+    </div>
+    <h2 id="wkTitle">Weekly checklist</h2>
+    <div id="habits" style="display:flex;flex-direction:column;gap:12px"></div>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="weeks">Weeks</button>
+    <button role="tab" aria-selected="false" data-tab="months">Months</button>
+    <button role="tab" aria-selected="false" data-tab="dreams">Dreams</button>
+  </div>
+
+  <section class="panel" id="p-weeks"></section>
+  <section class="panel" id="p-months" hidden></section>
+  <section class="panel" id="p-dreams" hidden></section>
+
+  <section class="settings" id="settings">
+    <h3>Google Sheet</h3>
+    <p class="status" id="cloudStatus">Not connected. Your ticks are only on this phone.</p>
+    <div id="cloudForm">
+      <label>Web app URL (same as Gym Log)<input id="cUrl" type="url" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off"></label>
+      <label style="margin-top:8px">Secret key (same as Gym Log)<input id="cKey" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+    </div>
+    <div class="row">
+      <button class="btn" id="cConnect">Connect</button>
+      <button class="btn ghost" id="cSync" hidden>Sync now</button>
+      <button class="btn ghost" id="cOff" hidden>Disconnect</button>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const IC={
+ quran:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/></svg>',
+ course:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg>',
+ gym:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg>',
+ film:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3" y="9" width="18" height="11" rx="1.5"/><path d="M3 9l2-5 16 2-1 3M8 5l2 3M13 6l2 3"/></svg>',
+ family:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9H3z"/><path d="M10 20v-5h4v5"/></svg>',
+ money:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="7" rx="7" ry="3"/><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg>',
+ pen:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-8-5-8-11a4 4 0 018-1 4 4 0 018 1c0 6-8 11-8 11z"/></svg>',
+ people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M15 14c3 0 6 1.5 6 4"/></svg>',
+ moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14A8 8 0 1110 4a6 6 0 0010 10z"/></svg>',
+ hands:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21v-5l-3-4V6M16 21v-5l3-4V6M8 16c0-2 1-4 4-4s4 2 4 4"/></svg>',
+ scroll:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 4h11a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6"/><path d="M5 6a1 1 0 112 0v12M9 9h7M9 13h7"/></svg>'
+};
+// Your plan, monthly goals and dreams live in your Google Sheet (tabs: Plan, Months, Dreams).
+// They load only after you Connect, so this page is empty for anyone else who opens it.
+let W=[];        // [["YYYY-MM-DD","task"], ...]
+let M={};        // { "YYYY-MM": { q, c, f, b, fa, m } }
+let DREAMS=[];   // [[group, [[icon,title,text,cls], ...]], ...]
+const SURAHS="Al-Fatihah,Al-Baqarah,Al Imran,An-Nisa,Al-Ma'idah,Al-An'am,Al-A'raf,Al-Anfal,At-Tawbah,Yunus,Hud,Yusuf,Ar-Ra'd,Ibrahim,Al-Hijr,An-Nahl,Al-Isra,Al-Kahf,Maryam,Ta-Ha,Al-Anbiya,Al-Hajj,Al-Mu'minun,An-Nur,Al-Furqan,Ash-Shu'ara,An-Naml,Al-Qasas,Al-Ankabut,Ar-Rum,Luqman,As-Sajdah,Al-Ahzab,Saba,Fatir,Ya-Sin,As-Saffat,Sad,Az-Zumar,Ghafir,Fussilat,Ash-Shura,Az-Zukhruf,Ad-Dukhan,Al-Jathiyah,Al-Ahqaf,Muhammad,Al-Fath,Al-Hujurat,Qaf,Adh-Dhariyat,At-Tur,An-Najm,Al-Qamar,Ar-Rahman,Al-Waqi'ah,Al-Hadid,Al-Mujadila,Al-Hashr,Al-Mumtahanah,As-Saff,Al-Jumu'ah,Al-Munafiqun,At-Taghabun,At-Talaq,At-Tahrim,Al-Mulk,Al-Qalam,Al-Haqqah,Al-Ma'arij,Nuh,Al-Jinn,Al-Muzzammil,Al-Muddaththir,Al-Qiyamah,Al-Insan,Al-Mursalat,An-Naba,An-Nazi'at,Abasa,At-Takwir,Al-Infitar,Al-Mutaffifin,Al-Inshiqaq,Al-Buruj,At-Tariq,Al-A'la,Al-Ghashiyah,Al-Fajr,Al-Balad,Ash-Shams,Al-Layl,Ad-Duha,Ash-Sharh,At-Tin,Al-Alaq,Al-Qadr,Al-Bayyinah,Az-Zalzalah,Al-Adiyat,Al-Qari'ah,At-Takathur,Al-Asr,Al-Humazah,Al-Fil,Quraysh,Al-Ma'un,Al-Kawthar,Al-Kafirun,An-Nasr,Al-Masad,Al-Ikhlas,Al-Falaq,An-Nas".split(",");
+
+// ---------- storage on this phone ----------
+const LS={state:"path2027",pending:"path2027-pending",cloud:"path2027-cloud",gym:"path2027-gym",last:"path2027-last"};
+function load(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+function keep(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let state=load(LS.state,{}); let pending=new Set(load(LS.pending,[])); let cloud=load(LS.cloud,null);
+let gymRows=load(LS.gym,[]); let auto={}; let viewIdx=0;
+const $=s=>document.querySelector(s);
+
+function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()-(x.getDay()+6)%7);return x}
+function iso(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function nowIdx(){if(!W.length)return 0;const m=iso(mondayOf(new Date()));let i=W.findIndex(w=>w[0]===m);if(i<0)i=m<W[0][0]?0:W.length-1;return i}
+function fmt(s,o){return new Date(s+"T12:00:00").toLocaleDateString("en-US",o)}
+function esc(t){return String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function st(id){return state[id]||{}}
+function gym(id,k){return !!(st(id)[k]||(auto[id]&&auto[id][k]))}
+function parts(id){const s=st(id);return{quran:!!(s.q&&s.q.to),course:(s.lessons||0)>=5,gym:gym(id,"push")&&gym(id,"pull")&&gym(id,"legs"),task:!!s.task}}
+function score(id){const s=st(id);const g=["push","pull","legs"].filter(k=>gym(id,k)).length;return Math.round(((s.task?1:0)+((s.q&&s.q.to)?1:0)+Math.min(1,(s.lessons||0)/5)+g/3)/4*100)}
+function full(id){return !!st(id).week&&score(id)>=70}
+function lastQ(beforeIdx){for(let i=beforeIdx-1;i>=0;i--){const q=st(W[i][0]).q;if(q&&q.to)return q}return null}
+function applyGym(rows){
+  const a={};(rows||[]).forEach(r=>{if(!r||!r[0]||!r[1])return;const m=String(r[0]).match(/^(\d{4})-(\d{2})-(\d{2})/);if(!m)return;
+    const wk=iso(mondayOf(new Date(+m[1],+m[2]-1,+m[3])));const d=String(r[1]).toLowerCase().trim();
+    const k=d.startsWith("push")?"push":d.startsWith("pull")?"pull":d.startsWith("leg")?"legs":null;if(k)(a[wk]=a[wk]||{})[k]=true});
+  auto=a;
+}
+
+// ---------- rendering ----------
+function renderWeek(){
+  if(!W.length){
+    $("#wkLabel").textContent="Not loaded";$("#prev").disabled=true;$("#next").disabled=true;
+    $("#habits").innerHTML=`<div class="block"><div class="lbl">Connect your Google Sheet</div><div class="saved">Your plan loads from the <b>Plan</b>, <b>Months</b> and <b>Dreams</b> tabs of your Sheet. Scroll down to connect.</div></div>`;
+    return;
+  }
+  const [id,task]=W[viewIdx];const ni=nowIdx();
+  const end=new Date(id+"T12:00:00");end.setDate(end.getDate()+6);
+  $("#wkLabel").textContent=(viewIdx===ni?"This week · ":"")+fmt(id,{month:"short",day:"numeric"})+" – "+end.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+  $("#prev").disabled=viewIdx===0;$("#next").disabled=viewIdx===W.length-1;
+  const s=st(id);const prevQ=lastQ(viewIdx);
+  const q=s.q||{s:prevQ?prevQ.s:"Al-Baqarah",from:prevQ?prevQ.to+1:1,to:""};
+  const n=s.lessons||0;
+  const g=k=>{const on=gym(id,k);const a=auto[id]&&auto[id][k];return `<button class="check" data-g="${k}" aria-pressed="${on}"><span class="box"></span><span>${k[0].toUpperCase()+k.slice(1)}${a?'<span class="small" style="margin:2px 0 0">from log</span>':""}</span></button>`};
+  $("#habits").innerHTML=`
+  <button class="check" id="taskBtn" aria-pressed="${!!s.task}"><span class="box"></span><span><span class="small">This week's task</span>${esc(task)}</span></button>
+  <div class="block"><div class="lbl">${IC.quran}Quran memorized this week</div>
+    <div class="qrow"><label>Surah<select id="qS">${SURAHS.map(x=>`<option${x===q.s?" selected":""}>${x}</option>`).join("")}</select></label>
+    <label>From ayah<input id="qF" type="number" inputmode="numeric" min="1" value="${q.from||""}"></label>
+    <label>To ayah<input id="qT" type="number" inputmode="numeric" min="1" value="${q.to||""}" placeholder="—"></label></div>
+    <div class="saved" id="qMsg">${s.q&&s.q.to?`Saved: ${esc(s.q.s)} ${s.q.from}–${s.q.to}`:"Type the last ayah you memorized. It saves on its own."}</div></div>
+  <div class="block"><div class="lbl">${IC.course}Course lessons <span class="sub">20 min each · goal 5 a week</span></div>
+    <div class="counter"><button class="step" id="cMinus" aria-label="One less lesson">−</button><b>${n}/5</b><button class="step" id="cPlus" aria-label="One more lesson">+</button><span class="pdots">${[0,1,2,3,4].map(i=>`<i class="${i<n?"on":""}"></i>`).join("")}</span></div></div>
+  <div class="block"><div class="lbl">${IC.gym}Gym <span class="sub">${gymRows.length?"filled from your Gym Log":"tap the days you trained"}</span></div>
+    <div class="gymgrid">${g("push")}${g("pull")}${g("legs")}</div></div>
+  <div class="block" id="wkProg"></div>`;
+  renderProg();
+}
+function renderProg(){
+  const el=$("#wkProg");if(!el)return;const id=W[viewIdx][0];const s=st(id);const sc=score(id);
+  el.innerHTML=`<div class="lbl">Week progress <span class="sub" style="margin-left:auto;font-size:14px;opacity:1;font-weight:600">${sc}%</span></div>
+    <div style="height:8px;border-radius:4px;background:rgba(255,255,255,.2);overflow:hidden"><i style="display:block;height:100%;width:${sc}%;background:#fff"></i></div>
+    <button class="chipbtn" id="weekBtn" aria-pressed="${!!s.week&&sc>=70}" ${sc<70?"disabled":""} style="align-self:flex-start${sc<70?";opacity:.5;cursor:not-allowed":""}">${s.week&&sc>=70?"✓ Week done":sc>=70?"Mark week done":"Reach 70% to mark the week done"}</button>`;
+}
+function renderWeeks(){
+  const ni=nowIdx();const groups={};W.forEach((w,i)=>{const k=w[0].slice(0,7);(groups[k]=groups[k]||[]).push(i)});
+  const open=W[ni][0].slice(0,7);const openNow=[...document.querySelectorAll("#p-weeks details[open]")].map(d=>d.dataset.m);
+  $("#p-weeks").innerHTML=Object.entries(groups).map(([k,idx])=>{
+    const done=idx.filter(i=>full(W[i][0])).length;const isOpen=openNow.length?openNow.includes(k):k===open;
+    return `<details class="month" data-m="${k}" ${isOpen?"open":""}><summary><h3>${fmt(k+"-15",{month:"long",year:"numeric"})}</h3><span class="bar"><i style="width:${done/idx.length*100}%"></i></span><span class="count">${done}/${idx.length}</span></summary>`+
+    idx.map(i=>{const [id,t]=W[i];const p=parts(id);return `<div class="wline${i===ni?" now":""}"><button class="wcheck" data-c="${i}" aria-pressed="${full(id)}" ${score(id)<70?"disabled":""} title="${score(id)}% done" aria-label="Week done for ${fmt(id,{month:"short",day:"numeric"})}"></button><button class="wrow" data-i="${i}"><span class="d">${fmt(id,{month:"short",day:"numeric"})}</span><span class="t${/PUBLISH/.test(t)?" pub":""}">${t}</span><span class="dots" title="Quran, course, gym, task">${["quran","course","gym","task"].map(x=>`<i class="${p[x]?"on":""}"></i>`).join("")}</span></button></div>`}).join("")+`</details>`}).join("");
+}
+function renderMonths(){
+  const rows=[["quran","Quran","q"],["course","Course","c"],["film","Film","f"],["gym","Body","b"],["family","Family","fa"],["money","Money","m"]];
+  if(!Object.keys(M).length){$("#p-months").innerHTML=`<div class="month"><div style="padding:16px;color:var(--muted);font-size:13px">Connect your Google Sheet to load your monthly goals.</div></div>`;return}
+  const cur=W.length?W[nowIdx()][0].slice(0,7):"";
+  $("#p-months").innerHTML=Object.entries(M).map(([k,g])=>`<details class="month" ${k===cur?"open":""}><summary><h3>${fmt(k+"-15",{month:"long",year:"numeric"})}</h3></summary><div class="mgrid">${rows.map(([ic,l,f])=>`<div class="mline">${IC[ic]}<div><b>${l}</b>${g[f]||""}</div></div>`).join("")}</div></details>`).join("");
+}
+function renderDreams(){
+  if(!DREAMS.length){$("#p-dreams").innerHTML=`<div class="dream" style="grid-column:1/-1;color:var(--muted);font-size:13px">Connect your Google Sheet to load your dreams.</div>`;return}
+  $("#p-dreams").innerHTML=DREAMS.map(([g,items])=>`<div class="grp">${g}</div><div class="dreams">${items.map(([ic,h,p,cls])=>`<div class="dream ${cls||""}">${IC[ic]||""}<h3>${h}</h3><p>${p||""}</p></div>`).join("")}</div>`).join("");
+}
+function renderStats(){
+  if(!W.length){$("#sWeeks").textContent=0;$("#sStories").textContent="0/6";$("#sQuran").textContent="Not loaded";$("#pct").textContent="0%";$("#ringArc").style.strokeDashoffset=251.3;return}
+  const fullW=W.filter(w=>full(w[0])).length;
+  const stories=W.filter(w=>/PUBLISH/.test(w[1])&&st(w[0]).task).length;
+  const lq=lastQ(W.length);
+  const pct=Math.round(W.reduce((a,w)=>a+score(w[0]),0)/W.length);
+  $("#sWeeks").textContent=fullW;$("#sStories").textContent=stories+"/6";
+  $("#sQuran").textContent=lq?`${lq.s} ${lq.to}`:"Not started";
+  $("#pct").textContent=pct+"%";$("#ringArc").style.strokeDashoffset=251.3*(1-pct/100);
+}
+function editing(){const el=document.activeElement;return el&&el.closest&&el.closest(".qrow")}
+function renderAll(){if(editing()){renderWeeks();renderStats();renderProg()}else{renderWeek();renderWeeks();renderStats()}}
+
+// ---------- saving ----------
+function save(id,patch){
+  const next={...st(id),...patch};if(next.q===null)delete next.q;state[id]=next;
+  keep(LS.state,state);pending.add(id);keep(LS.pending,[...pending]);
+  queueSync();
+}
+const H=$("#habits");
+H.addEventListener("click",e=>{
+  const id=W[viewIdx][0];const s=st(id);
+  if(e.target.closest("#taskBtn")){save(id,{task:!s.task});renderAll();return}
+  if(e.target.closest("#weekBtn")){if(score(id)<70)return;save(id,{week:!s.week});renderAll();return}
+  if(e.target.closest("#cPlus")){save(id,{lessons:Math.min(7,(s.lessons||0)+1)});renderAll();return}
+  if(e.target.closest("#cMinus")){save(id,{lessons:Math.max(0,(s.lessons||0)-1)});renderAll();return}
+  const g=e.target.closest("[data-g]");if(g){const k=g.dataset.g;save(id,{[k]:!st(id)[k]});renderAll()}
+});
+let qTimer=null;
+H.addEventListener("input",e=>{if(!e.target.closest(".qrow"))return;clearTimeout(qTimer);qTimer=setTimeout(saveQ,900)});
+H.addEventListener("change",e=>{if(!e.target.closest(".qrow"))return;clearTimeout(qTimer);saveQ()});
+function saveQ(){
+  const id=W[viewIdx][0];const sEl=$("#qS");if(!sEl)return;
+  const from=parseInt($("#qF").value,10)||1;const to=parseInt($("#qT").value,10)||0;const msg=$("#qMsg");
+  if(!to){if(st(id).q)save(id,{q:null});msg.textContent="Type the last ayah you memorized. It saves on its own.";renderProg();renderWeeks();renderStats();return}
+  if(to<from){msg.textContent="The last ayah has to be the same as or after the first one.";return}
+  save(id,{q:{s:sEl.value,from,to}});msg.textContent=`Saved: ${sEl.value} ${from}–${to}`;renderProg();renderWeeks();renderStats();
+}
+$("#p-weeks").addEventListener("click",e=>{const c=e.target.closest(".wcheck");if(c){const id=W[+c.dataset.c][0];if(score(id)<70)return;save(id,{week:!st(id).week});renderAll();return}const b=e.target.closest(".wrow");if(b){viewIdx=+b.dataset.i;renderWeek();window.scrollTo({top:0,behavior:"smooth"})}});
+$("#prev").onclick=()=>{if(W.length&&viewIdx>0){viewIdx--;renderWeek()}};
+$("#next").onclick=()=>{if(W.length&&viewIdx<W.length-1){viewIdx++;renderWeek()}};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));["weeks","months","dreams"].forEach(t=>$("#p-"+t).hidden=t!==b.dataset.tab)});
+
+// ---------- Google Sheet sync (same Apps Script as Gym Log) ----------
+// Row layout in the "2027 Path" tab: week, task, task_done, surah, from, to, lessons, push, pull, legs, week_done, score
+function toRow(id){const i=W.findIndex(w=>w[0]===id);const s=st(id);const q=s.q&&s.q.to?s.q:null;const sc=score(id);
+  return [id,i>=0?W[i][1]:"",!!s.task,q?q.s:"",q?q.from:"",q?q.to:"",s.lessons||0,!!s.push,!!s.pull,!!s.legs,!!s.week&&sc>=70,sc]}
+function fromRow(r){const b=x=>x===true||String(x).toUpperCase()==="TRUE";
+  const rec={task:b(r[2]),lessons:+r[6]||0,push:b(r[7]),pull:b(r[8]),legs:b(r[9]),week:b(r[10])};
+  if(r[3]&&+r[5])rec.q={s:String(r[3]),from:+r[4]||1,to:+r[5]};return rec}
+let sync={state:"idle",err:""};let syncing=false,again=false,syncTimer=null;
+function queueSync(){clearTimeout(syncTimer);syncTimer=setTimeout(doSync,1200);paintCloud()}
+async function call(body){
+  // Plain-text body keeps this a "simple" request, so Apps Script needs no CORS preflight.
+  const res=await fetch(cloud.url,{method:"POST",body:JSON.stringify(body)});
+  let data;try{data=await res.json()}catch(e){throw new Error("That URL didn't answer like your Gym Log script. Check the web app URL.")}
+  if(!data.ok)throw new Error(data.error==="wrong key"?"Wrong secret key. Use the same key as Gym Log.":(data.error||"The sheet returned an error."));
+  if(!("weeks" in data))throw new Error("The script is the old version. Paste the new Code.gs and deploy a new version (see README).");
+  return data;
+}
+async function doSync(){
+  if(!cloud)return;if(syncing){again=true;return}
+  if(!navigator.onLine){sync={state:"offline",err:""};paintCloud();return}
+  syncing=true;sync={state:"syncing",err:""};paintCloud();
+  const ids=[...pending];
+  try{
+    const data=await call({key:cloud.key,app:"path",put:ids.map(id=>({id,row:toRow(id)})),list:true});
+    ids.forEach(id=>pending.delete(id));keep(LS.pending,[...pending]);
+    if(Array.isArray(data.plan))W=data.plan;
+    if(data.months&&typeof data.months==="object")M=data.months;
+    if(Array.isArray(data.dreams))DREAMS=data.dreams;
+    viewIdx=nowIdx();
+    const valid=new Set(W.map(w=>w[0]));
+    const fresh={};(data.weeks||[]).forEach(r=>{if(valid.has(r[0]))fresh[r[0]]=fromRow(r)});
+    pending.forEach(id=>{if(state[id])fresh[id]=state[id]}); // changes made while this request was out
+    state=fresh;keep(LS.state,state);
+    gymRows=data.gym||[];keep(LS.gym,gymRows);applyGym(gymRows);
+    keep(LS.last,Date.now());sync={state:"ok",err:""};renderAll();renderMonths();renderDreams();
+  }catch(e){sync={state:"error",err:e.message||"Couldn't reach the sheet."}}
+  finally{syncing=false;paintCloud();if(again){again=false;doSync()}}
+}
+function paintCloud(){
+  const b=$("#badge");const n=pending.size;let cls="",txt;
+  if(!cloud)txt="On this phone only · tap to connect";
+  else if(sync.state==="syncing")txt="Saving…";
+  else if(sync.state==="error"){cls="err";txt="Sheet error · tap"}
+  else if(!navigator.onLine||sync.state==="offline"){cls="wait";txt=`Offline${n?` · ${n} waiting`:""}`}
+  else if(n){cls="wait";txt=`${n} waiting`}
+  else{cls="ok";txt="Saved to Sheet"}
+  b.className="badge "+cls;$("#badgeTxt").textContent=txt;
+  const last=load(LS.last,0);
+  $("#cloudStatus").textContent=!cloud?"Not connected. Your ticks are only on this phone.":
+    sync.state==="error"?sync.err:
+    `Connected.${last?" Last synced "+new Date(last).toLocaleString("en-US",{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})+".":""}${n?` ${n} change(s) waiting.`:" Everything is saved."}`;
+  $("#cloudForm").hidden=!!cloud;$("#cConnect").hidden=!!cloud;$("#cSync").hidden=!cloud;$("#cOff").hidden=!cloud;
+}
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2200)}
+$("#badge").onclick=()=>$("#settings").scrollIntoView({behavior:"smooth"});
+$("#cConnect").onclick=async()=>{
+  const url=$("#cUrl").value.trim(),key=$("#cKey").value.trim();
+  if(!/^https:\/\/script\.google\.com\/.+\/exec$/.test(url)){$("#cloudStatus").textContent="The URL should start with https://script.google.com/ and end with /exec.";return}
+  if(!key){$("#cloudStatus").textContent="Paste your secret key too.";return}
+  cloud={url,key};keep(LS.cloud,cloud);
+  Object.keys(state).forEach(id=>pending.add(id));keep(LS.pending,[...pending]); // upload what this phone has
+  await doSync();
+  if(sync.state==="ok")toast("Connected to your Google Sheet");
+  else{cloud=null;keep(LS.cloud,null);const err=sync.err;sync={state:"idle",err:""};paintCloud();$("#cloudStatus").textContent=err}
+};
+$("#cSync").onclick=()=>doSync();
+$("#cOff").onclick=()=>{if(!confirm("Disconnect this phone from the Google Sheet? Your sheet keeps everything."))return;cloud=null;keep(LS.cloud,null);sync={state:"idle",err:""};paintCloud()};
+window.addEventListener("online",doSync);window.addEventListener("offline",paintCloud);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")doSync()});
+
+// ---------- start ----------
+applyGym(gymRows);viewIdx=nowIdx();
+renderAll();renderMonths();renderDreams();paintCloud();doSync();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
